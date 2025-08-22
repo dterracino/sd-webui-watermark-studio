@@ -1,3 +1,11 @@
+# Watermark Studio Extension specific
+temp/*
+!temp/.gitkeep
+cache/*
+!cache/.gitkeep
+assets/*
+!assets/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

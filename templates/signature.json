@@ -1,0 +1,12 @@
+# Artist signature template
+{
+  "name": "Artist Signature",
+  "description": "Discrete signature for artwork",
+  "settings": {
+    "text": "Artist Name",
+    "opacity": 0.3,
+    "position": "bottom-left",
+    "color": "#cccccc", 
+    "font_size": 18
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "extension": {
+    "name": "Watermark Studio",
+    "version": "1.0.0",
+    "description": "Professional watermarking capabilities for AUTOMATIC1111 Stable Diffusion WebUI",
+    "author": "Watermark Studio Team",
+    "repository": "https://github.com/dterracino/sd-webui-watermark-studio",
+    "license": "Unlicense"
+  },
+  "settings": {
+    "default_enabled": false,
+    "default_text": "",
+    "default_opacity": 0.5,
+    "default_position": "bottom-right",
+    "default_color": "#ffffff",
+    "default_font_size": 24,
+    "auto_watermark": false
+  },
+  "ui": {
+    "show_in_tabs": ["txt2img", "img2img"],
+    "create_custom_tab": true,
+    "accordion_open": false,
+    "enable_shortcuts": true,
+    "shortcut_key": "Ctrl+Shift+W"
+  },
+  "features": {
+    "text_watermarks": true,
+    "image_watermarks": false,
+    "batch_processing": false,
+    "templates": false,
+    "advanced_positioning": false,
+    "real_time_preview": false
+  },
+  "directories": {
+    "temp": "temp/",
+    "cache": "cache/",
+    "templates": "templates/",
+    "assets": "assets/"
+  },
+  "file_formats": {
+    "supported_input": ["png", "jpg", "jpeg", "webp"],
+    "supported_output": ["png", "jpg", "jpeg", "webp"],
+    "default_format": "png"
+  }
+}
