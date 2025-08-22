@@ -12,6 +12,14 @@ from modules.processing import StableDiffusionProcessing, Processed
 from modules.shared import opts
 import os
 
+# Import font loading functionality
+try:
+    from scripts.load_fonts import load_fonts
+    FONTS_AVAILABLE = True
+except Exception as e:
+    print(f"[Watermark Studio] Error loading fonts module: {e}")
+    FONTS_AVAILABLE = False
+
 
 class WatermarkStudioScript(scripts.Script):
     """Main script class for the Watermark Studio extension."""
@@ -22,6 +30,17 @@ class WatermarkStudioScript(scripts.Script):
         self.watermark_opacity = 0.5
         self.watermark_position = "bottom-right"
         self.auto_watermark = False
+        self.watermark_font = "arial"  # Default font
+        
+        # Load available fonts
+        self.available_fonts = {}
+        if FONTS_AVAILABLE:
+            try:
+                self.available_fonts = load_fonts()
+                if not self.available_fonts:
+                    print("[Watermark Studio] No fonts found in assets/fonts directory")
+            except Exception as e:
+                print(f"[Watermark Studio] Error loading fonts: {e}")
         
     def title(self):
         """Return the title of this script."""
@@ -53,6 +72,23 @@ class WatermarkStudioScript(scripts.Script):
                         value=self.watermark_text,
                         placeholder="Enter watermark text (e.g., your name or website)",
                         elem_id=f"watermark_studio_text_{tab_name}"
+                    )
+                
+                with gr.Row():
+                    # Font selection dropdown
+                    if self.available_fonts:
+                        font_choices = list(self.available_fonts.keys())
+                        default_font = self.watermark_font if self.watermark_font in font_choices else font_choices[0]
+                    else:
+                        font_choices = ["No fonts available"]
+                        default_font = "No fonts available"
+                    
+                    font_selection = gr.Dropdown(
+                        choices=font_choices,
+                        value=default_font,
+                        label=f"Watermark Font ({len(self.available_fonts)} fonts available)" if self.available_fonts else "Watermark Font (No fonts loaded)",
+                        elem_id=f"watermark_studio_font_{tab_name}",
+                        interactive=bool(self.available_fonts)
                     )
                 
                 with gr.Row():
@@ -118,13 +154,19 @@ class WatermarkStudioScript(scripts.Script):
                     outputs=[status_text]
                 )
                 
+                font_selection.change(
+                    fn=self._on_font_change,
+                    inputs=[font_selection],
+                    outputs=[status_text]
+                )
+                
                 test_button.click(
                     fn=self._test_watermark,
-                    inputs=[enabled, watermark_text, opacity, position, auto_watermark],
+                    inputs=[enabled, watermark_text, font_selection, opacity, position, auto_watermark],
                     outputs=[status_text]
                 )
         
-        return [enabled, watermark_text, opacity, position, auto_watermark]
+        return [enabled, watermark_text, font_selection, opacity, position, auto_watermark]
     
     def _on_enabled_change(self, enabled):
         """Handle enable/disable events."""
@@ -140,10 +182,19 @@ class WatermarkStudioScript(scripts.Script):
         else:
             return "<span style='color: orange;'>No watermark text</span>"
     
-    def _test_watermark(self, enabled, text, opacity, position, auto_watermark):
+    def _on_font_change(self, font_name):
+        """Handle font selection changes."""
+        self.watermark_font = font_name
+        if font_name and font_name != "No fonts available":
+            return f"<span style='color: green;'>Font: {font_name}</span>"
+        else:
+            return "<span style='color: orange;'>No font selected</span>"
+    
+    def _test_watermark(self, enabled, text, font, opacity, position, auto_watermark):
         """Test watermark settings and provide feedback."""
         self.enabled = enabled
         self.watermark_text = text
+        self.watermark_font = font
         self.watermark_opacity = opacity
         self.watermark_position = position
         self.auto_watermark = auto_watermark
@@ -154,35 +205,38 @@ class WatermarkStudioScript(scripts.Script):
         if not text:
             return "<span style='color: red;'>Please enter watermark text</span>"
         
-        status = f"<span style='color: green;'>✓ Ready: '{text}' at {position} ({int(opacity*100)}% opacity)</span>"
+        font_info = f" in {font}" if font and font != "No fonts available" else ""
+        status = f"<span style='color: green;'>✓ Ready: '{text}'{font_info} at {position} ({int(opacity*100)}% opacity)</span>"
         if auto_watermark:
             status += "<br><span style='color: blue;'>Auto-watermark is ON</span>"
         
         return status
     
-    def before_process(self, p: StableDiffusionProcessing, enabled, watermark_text, opacity, position, auto_watermark):
+    def before_process(self, p: StableDiffusionProcessing, enabled, watermark_text, font, opacity, position, auto_watermark):
         """Called before image processing starts."""
         if enabled and auto_watermark and watermark_text:
-            print(f"[Watermark Studio] Preparing to watermark with: '{watermark_text}' at {position}")
+            print(f"[Watermark Studio] Preparing to watermark with: '{watermark_text}' using {font} at {position}")
             # Store watermark settings in the processing object for later use
             p.watermark_studio_settings = {
                 'enabled': enabled,
                 'text': watermark_text,
+                'font': font,
                 'opacity': opacity,
                 'position': position,
                 'auto_watermark': auto_watermark
             }
     
-    def postprocess(self, p: StableDiffusionProcessing, res: Processed, enabled, watermark_text, opacity, position, auto_watermark):
+    def postprocess(self, p: StableDiffusionProcessing, res: Processed, enabled, watermark_text, font, opacity, position, auto_watermark):
         """Called after image processing is complete."""
         if enabled and auto_watermark and watermark_text:
-            print(f"[Watermark Studio] Image generation complete. Would apply watermark: '{watermark_text}'")
+            print(f"[Watermark Studio] Image generation complete. Would apply watermark: '{watermark_text}' using {font}")
             # In a real implementation, this is where we would apply the watermark to res.images
             # For now, we just log the event to demonstrate event handling
             
             # Add watermark info to the generation info
+            font_info = f" using {font}" if font and font != "No fonts available" else ""
             if res.info:
-                res.info += f"\nWatermark: '{watermark_text}' at {position} ({int(opacity*100)}% opacity)"
+                res.info += f"\nWatermark: '{watermark_text}'{font_info} at {position} ({int(opacity*100)}% opacity)"
 
 
 # Register script callbacks for advanced event handling
