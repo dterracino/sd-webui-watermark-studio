@@ -102,7 +102,8 @@ def test_extension_structure():
         'CONTRIBUTING.md',
         'extension.txt',
         'MANIFEST.in',
-        'version.py'
+        'version.py',
+        'pyproject.toml'
     ]
     
     for file_path in required_files:
