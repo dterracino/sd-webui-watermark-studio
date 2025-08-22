@@ -1,0 +1,12 @@
+# Default template for simple text watermark
+{
+  "name": "Simple Text",
+  "description": "Basic text watermark with standard settings",
+  "settings": {
+    "text": "Sample Watermark",
+    "opacity": 0.5,
+    "position": "bottom-right", 
+    "color": "#ffffff",
+    "font_size": 24
+  }
+}

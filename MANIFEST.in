@@ -1,0 +1,38 @@
+# Manifest file for Watermark Studio Extension
+# This file specifies which files should be included when distributing the extension
+
+include README.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+include LICENSE
+include config.json
+include extension.txt
+include requirements.txt
+include install.py
+include preload.py
+include style.css
+
+# Include all Python files
+recursive-include scripts *.py
+
+# Include JavaScript files
+recursive-include javascript *.js
+
+# Include templates
+recursive-include templates *.json
+
+# Include static assets (when they exist)
+recursive-include assets *
+
+# Exclude compiled Python files
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude *.pyo
+
+# Exclude temporary and cache files
+exclude temp/*
+exclude cache/*
+
+# Exclude test files from distribution
+exclude test_extension.py
+exclude *.egg-info/*

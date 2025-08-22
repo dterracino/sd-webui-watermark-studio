@@ -1,0 +1,15 @@
+# Watermark Studio Extension - Python Dependencies
+# 
+# This file lists all Python packages required by the extension.
+# The install.py script will automatically install these when the extension loads.
+
+# Core image processing dependencies
+Pillow>=10.0.0
+
+# Optional dependencies for enhanced functionality
+# Uncomment these if you need additional features:
+
+# numpy>=1.21.0          # For advanced image processing
+# opencv-python>=4.5.0   # For advanced computer vision features
+# fonttools>=4.0.0       # For advanced font handling
+# matplotlib>=3.5.0      # For color palette generation

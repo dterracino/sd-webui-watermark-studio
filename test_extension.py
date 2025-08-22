@@ -76,7 +76,7 @@ def test_extension_structure():
     print("=" * 50)
     
     # Check required directories exist
-    required_dirs = ['scripts', 'javascript']
+    required_dirs = ['scripts', 'javascript', 'templates', 'temp', 'cache', 'assets']
     for dir_name in required_dirs:
         if os.path.exists(dir_name):
             print(f"✅ Directory '{dir_name}' exists")
@@ -90,9 +90,20 @@ def test_extension_structure():
         'scripts/watermark_studio.py', 
         'scripts/watermark_studio_tab.py',
         'scripts/watermark_utils.py',
+        'scripts/preload.py',
         'javascript/watermark_studio.js',
         'style.css',
-        'README.md'
+        'README.md',
+        'install.py',
+        'preload.py', 
+        'requirements.txt',
+        'CHANGELOG.md',
+        'config.json',
+        'CONTRIBUTING.md',
+        'extension.txt',
+        'MANIFEST.in',
+        'version.py',
+        'pyproject.toml'
     ]
     
     for file_path in required_files:
@@ -101,6 +112,17 @@ def test_extension_structure():
         else:
             print(f"❌ File '{file_path}' missing") 
             return False
+    
+    # Test config.json is valid JSON
+    try:
+        import json
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+        print("✅ config.json is valid JSON")
+        print(f"✅ Extension name: {config.get('extension', {}).get('name', 'Unknown')}")
+    except Exception as e:
+        print(f"❌ Error reading config.json: {e}")
+        return False
     
     return True
 
