@@ -1,0 +1,67 @@
+/* Watermark Studio Extension Styles */
+
+/* Style for the Watermark Studio accordions */
+#watermark_studio_enabled_txt2img,
+#watermark_studio_enabled_img2img {
+    margin-bottom: 10px;
+}
+
+/* Status text styling */
+#watermark_studio_status_txt2img,
+#watermark_studio_status_img2img {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Test button styling */
+#watermark_studio_test_txt2img,
+#watermark_studio_test_img2img {
+    margin-right: 10px;
+}
+
+/* Custom tab specific styles */
+#watermark_studio_input_image,
+#watermark_studio_output_image {
+    min-height: 400px;
+}
+
+#watermark_studio_status_info {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Batch processing gallery */
+#watermark_studio_batch_gallery {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    min-height: 300px;
+}
+
+/* Template preview styling */
+#watermark_studio_template_preview {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* Watermark Studio tab header */
+.watermark-studio-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #watermark_studio_input_image,
+    #watermark_studio_output_image {
+        min-height: 250px;
+    }
+}
