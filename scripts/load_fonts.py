@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 # Default folder (can be overridden by passing a different one to load_fonts)
-DEFAULT_FONTS_FOLDER = "assets/fonts"
+DEFAULT_FONTS_FOLDER = "../assets/fonts"
 
 
 def load_fonts(folder: str | None = None) -> Dict[str, str]:
