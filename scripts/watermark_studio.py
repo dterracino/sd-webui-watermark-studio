@@ -253,15 +253,15 @@ def on_app_started(demo, app):
 def on_ui_settings():
     """Add extension settings to the Settings tab."""
     shared.opts.add_option("watermark_studio_default_text", shared.OptionInfo(
-        "", "Default watermark text", gr.Textbox
+        "", "Default watermark text", gr.Textbox, section=("watermark_studio", "Watermark Studio")
     ))
     
     shared.opts.add_option("watermark_studio_default_enabled", shared.OptionInfo(
-        False, "Enable watermarking by default", gr.Checkbox
+        False, "Enable watermarking by default", gr.Checkbox, section=("watermark_studio", "Watermark Studio")
     ))
     
     shared.opts.add_option("watermark_studio_preserve_transparency", shared.OptionInfo(
-        True, "Preserve image transparency when watermarking", gr.Checkbox
+        True, "Preserve image transparency when watermarking", gr.Checkbox, section=("watermark_studio", "Watermark Studio")
     ))
 
 
